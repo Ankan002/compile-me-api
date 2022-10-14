@@ -61,6 +61,13 @@ func CompileJavascript(filename string, stdInput string) CompileJavascriptRespon
 	compilationResult, compilationError := compilationPromise.Await()
 
 	if compilationError != nil {
+		if compilationError.Error() == "TLE" {
+			return CompileJavascriptResponse{
+				Success: false,
+				Error:   "Time Limit Exceeded...",
+			}
+		}
+
 		return CompileJavascriptResponse{
 			Success: false,
 			Error:   compilationError.Error(),
