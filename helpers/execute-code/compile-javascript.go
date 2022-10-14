@@ -4,6 +4,7 @@ import (
 	"errors"
 	"github.com/chebyrash/promise"
 	"io"
+	"log"
 	"os/exec"
 	"time"
 )
@@ -16,11 +17,13 @@ type CompileJavascriptResponse struct {
 
 func CompileJavascript(filename string, stdInput string) CompileJavascriptResponse {
 	compilationPromise := promise.New(func(resolve func(result string), reject func(error)) {
+		execCommand := exec.Command("node", filename)
+
 		time.AfterFunc(8*time.Second, func() {
+			log.Println(execCommand.Process.Kill())
+
 			reject(errors.New("TLE"))
 		})
-
-		execCommand := exec.Command("node", filename)
 
 		input, _ := execCommand.StdinPipe()
 		output, _ := execCommand.StdoutPipe()
@@ -61,6 +64,13 @@ func CompileJavascript(filename string, stdInput string) CompileJavascriptRespon
 	compilationResult, compilationError := compilationPromise.Await()
 
 	if compilationError != nil {
+		if compilationError.Error() == "TLE" {
+			return CompileJavascriptResponse{
+				Success: false,
+				Error:   "Time Limit Exceeded...",
+			}
+		}
+
 		return CompileJavascriptResponse{
 			Success: false,
 			Error:   compilationError.Error(),
