@@ -20,7 +20,9 @@ func CompileJavascript(filename string, stdInput string) CompileJavascriptRespon
 		execCommand := exec.Command("node", filename)
 
 		time.AfterFunc(8*time.Second, func() {
-			log.Println(execCommand.Process.Kill())
+			if processKillError := execCommand.Process.Kill(); processKillError != nil {
+				log.Println(processKillError)
+			}
 
 			reject(errors.New("TLE"))
 		})
