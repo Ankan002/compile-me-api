@@ -4,6 +4,7 @@ import (
 	"errors"
 	"github.com/chebyrash/promise"
 	"io"
+	"log"
 	"os/exec"
 	"time"
 )
@@ -16,11 +17,13 @@ type CompileJavascriptResponse struct {
 
 func CompileJavascript(filename string, stdInput string) CompileJavascriptResponse {
 	compilationPromise := promise.New(func(resolve func(result string), reject func(error)) {
+		execCommand := exec.Command("node", filename)
+
 		time.AfterFunc(8*time.Second, func() {
+			log.Println(execCommand.Process.Kill())
+
 			reject(errors.New("TLE"))
 		})
-
-		execCommand := exec.Command("node", filename)
 
 		input, _ := execCommand.StdinPipe()
 		output, _ := execCommand.StdoutPipe()
