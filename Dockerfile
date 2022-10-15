@@ -15,6 +15,8 @@ RUN apt-get install -y nodejs
 
 RUN apt-get install -y npm
 
+RUN npm i -g typescript ts-node
+
 COPY go.mod .
 COPY go.sum .
 

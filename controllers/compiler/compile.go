@@ -51,7 +51,8 @@ func Compiler(c *fiber.Ctx) error {
 	var stdOutput string
 	var stdErr string
 
-	if request.Language == "js" {
+	switch request.Language {
+	case "js":
 		jsCompileResponse := execute_code.CompileJavascript("code/"+createFileResponse.FileName, request.StdInput)
 
 		if !jsCompileResponse.Success {
@@ -59,6 +60,18 @@ func Compiler(c *fiber.Ctx) error {
 		} else {
 			stdOutput = jsCompileResponse.Output
 		}
+		break
+	case "ts":
+		tsCompileResponse := execute_code.CompileTypescript("code/"+createFileResponse.FileName, request.StdInput)
+
+		if !tsCompileResponse.Success {
+			stdErr = tsCompileResponse.Error
+		} else {
+			stdOutput = tsCompileResponse.Output
+		}
+		break
+	default:
+		stdErr = "Please provide us with a valid language"
 	}
 
 	helpers.DeleteFile("code/" + createFileResponse.FileName)
