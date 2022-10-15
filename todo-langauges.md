@@ -3,7 +3,7 @@
 ### Mandatory
 
 - [x] Javascript
-- [ ] Typescript
+- [x] Typescript
 - [ ] Golang
 - [ ] Python
 - [ ] Java

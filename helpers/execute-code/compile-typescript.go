@@ -10,26 +10,24 @@ import (
 	"time"
 )
 
-func CompileJavascript(filename string, stdInput string) types.CompileCodeResponse {
+func CompileTypescript(filename string, stdInput string) types.CompileCodeResponse {
 	compilationPromise := promise.New(func(resolve func(result string), reject func(error)) {
-		execCommand := exec.Command("node", filename)
+		execCommand := exec.Command("ts-node", filename)
 
 		time.AfterFunc(8*time.Second, func() {
 			if processKillError := execCommand.Process.Kill(); processKillError != nil {
-				log.Println(processKillError)
+				log.Println(processKillError.Error())
 			}
 
 			reject(errors.New("TLE"))
 		})
 
 		input, _ := execCommand.StdinPipe()
-		output, _ := execCommand.StdoutPipe()
-		stdErr, _ := execCommand.StderrPipe()
+		stdOutput, _ := execCommand.StdoutPipe()
+		stdError, _ := execCommand.StderrPipe()
 
-		commandStartError := execCommand.Start()
-
-		if commandStartError != nil {
-			reject(errors.New(commandStartError.Error()))
+		if startCommandError := execCommand.Start(); startCommandError != nil {
+			reject(errors.New(startCommandError.Error()))
 		}
 
 		if stdInput != "" {
@@ -41,13 +39,13 @@ func CompileJavascript(filename string, stdInput string) types.CompileCodeRespon
 			}
 		}
 
-		stdErrBytes, _ := io.ReadAll(stdErr)
+		stdErrBytes, _ := io.ReadAll(stdError)
 
 		if stdErrBytes != nil && len(string(stdErrBytes)) > 1 {
 			reject(errors.New(string(stdErrBytes)))
 		}
 
-		stdOutputBytes, _ := io.ReadAll(output)
+		stdOutputBytes, _ := io.ReadAll(stdOutput)
 
 		waitErr := execCommand.Wait()
 
@@ -67,6 +65,8 @@ func CompileJavascript(filename string, stdInput string) types.CompileCodeRespon
 				Error:   "Time Limit Exceeded...",
 			}
 		}
+
+		//TODO: Code for if its not a TLE.
 
 		return types.CompileCodeResponse{
 			Success: false,
