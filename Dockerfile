@@ -15,6 +15,8 @@ RUN apt-get install -y nodejs
 
 RUN apt-get install -y npm
 
+RUN apt-get install -y python3
+
 RUN npm i -g typescript ts-node
 
 COPY go.mod .

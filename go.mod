@@ -3,13 +3,16 @@ module github.com/Ankan002/compiler-api
 go 1.18
 
 require (
+	github.com/chebyrash/promise v0.0.0-20220530143319-1123826567d6
+	github.com/go-playground/validator/v10 v10.11.1
+	github.com/gofiber/fiber/v2 v2.38.1
+	github.com/joho/godotenv v1.4.0
+)
+
+require (
 	github.com/andybalholm/brotli v1.0.4 // indirect
-	github.com/chebyrash/promise v0.0.0-20220530143319-1123826567d6 // indirect
 	github.com/go-playground/locales v0.14.0 // indirect
 	github.com/go-playground/universal-translator v0.18.0 // indirect
-	github.com/go-playground/validator/v10 v10.11.1 // indirect
-	github.com/gofiber/fiber/v2 v2.38.1 // indirect
-	github.com/joho/godotenv v1.4.0 // indirect
 	github.com/klauspost/compress v1.15.0 // indirect
 	github.com/leodido/go-urn v1.2.1 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
