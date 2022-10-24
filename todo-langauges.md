@@ -5,7 +5,7 @@
 - [x] Javascript
 - [x] Typescript
 - [ ] Golang
-- [ ] Python
+- [x] Python
 - [ ] Java
 - [ ] C++
 - [ ] C

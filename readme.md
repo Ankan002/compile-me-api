@@ -12,6 +12,7 @@ This project is a standalone api that can be used to compile code on web on the 
 ### Contributors
 
 - [Ankan Bhattacharya](https://github.com/Ankan002)
+- [Dilpreet Grover](https://github.com/dfordp)
 
 ### Support My Work
 
