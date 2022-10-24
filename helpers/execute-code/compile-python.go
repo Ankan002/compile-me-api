@@ -7,12 +7,22 @@ import (
 	"io"
 	"log"
 	"os/exec"
+	"runtime"
 	"time"
 )
 
-func CompileTypescript(filename string, stdInput string) types.CompileCodeResponse {
+func CompilePython(filename string, stdInput string) types.CompileCodeResponse {
 	compilationPromise := promise.New(func(resolve func(result string), reject func(error)) {
-		execCommand := exec.Command("ts-node", filename)
+		currentOS := runtime.GOOS
+
+		var execCommand *exec.Cmd
+
+		//goland:noinspection GoBoolExpressions
+		if currentOS == "windows" {
+			execCommand = exec.Command("python", filename)
+		} else {
+			execCommand = exec.Command("python3", filename)
+		}
 
 		time.AfterFunc(8*time.Second, func() {
 			if processKillError := execCommand.Process.Kill(); processKillError != nil {
@@ -27,7 +37,7 @@ func CompileTypescript(filename string, stdInput string) types.CompileCodeRespon
 		stdError, _ := execCommand.StderrPipe()
 
 		if startCommandError := execCommand.Start(); startCommandError != nil {
-			reject(errors.New(startCommandError.Error()))
+			reject(startCommandError)
 		}
 
 		if stdInput != "" {
@@ -39,10 +49,10 @@ func CompileTypescript(filename string, stdInput string) types.CompileCodeRespon
 			}
 		}
 
-		stdErrBytes, _ := io.ReadAll(stdError)
+		stdErrorBytes, _ := io.ReadAll(stdError)
 
-		if stdErrBytes != nil && len(string(stdErrBytes)) > 1 {
-			reject(errors.New(string(stdErrBytes)))
+		if stdErrorBytes != nil && len(string(stdErrorBytes)) > 1 {
+			reject(errors.New(string(stdErrorBytes)))
 		}
 
 		stdOutputBytes, _ := io.ReadAll(stdOutput)
@@ -62,7 +72,7 @@ func CompileTypescript(filename string, stdInput string) types.CompileCodeRespon
 		if compilationError.Error() == "TLE" {
 			return types.CompileCodeResponse{
 				Success: false,
-				Error:   "Time Limit Exceeded...",
+				Error:   "Time Limit Exceeded",
 			}
 		}
 
