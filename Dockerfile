@@ -17,6 +17,10 @@ RUN apt-get install -y npm
 
 RUN apt-get install -y python3
 
+RUN apt-get install -y default-jre
+
+RUN apt-get install -y default-jdk
+
 RUN npm i -g typescript ts-node
 
 COPY go.mod .
