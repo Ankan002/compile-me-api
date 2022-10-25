@@ -6,7 +6,7 @@
 - [x] Typescript
 - [x] Golang
 - [x] Python
-- [ ] Java
+- [x] Java
 - [ ] C++
 - [ ] C
 - [ ] C#
