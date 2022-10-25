@@ -10,7 +10,7 @@ import (
 
 type CompRequest struct {
 	Code     string `json:"code" validate:"required"`
-	Language string `json:"language" validate:"required,eq=js|eq=ts|eq=py|eq=go"`
+	Language string `json:"language" validate:"required,eq=js|eq=ts|eq=py|eq=go|eq=java"`
 	StdInput string `json:"stdInput"`
 }
 
@@ -88,6 +88,15 @@ func Compiler(c *fiber.Ctx) error {
 			stdOutput = goCompileResponse.Output
 		}
 		break
+	case "java":
+		javaCompileResponse := execute_code.CompileJava("code/"+createFileResponse.FileName, request.StdInput)
+
+		if !javaCompileResponse.Success {
+			stdErr = javaCompileResponse.Error
+		} else {
+			stdOutput = javaCompileResponse.Output
+		}
+		break
 	default:
 		stdErr = "Please provide us with a valid language"
 	}
@@ -96,7 +105,7 @@ func Compiler(c *fiber.Ctx) error {
 
 	if stdErr != "" {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"success":   true,
+			"success":   false,
 			"error":     stdErr,
 			"timestamp": time.Now(),
 		})
