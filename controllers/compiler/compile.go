@@ -79,6 +79,15 @@ func Compiler(c *fiber.Ctx) error {
 			stdOutput = pyCompileResponse.Output
 		}
 		break
+	case "go":
+		goCompileResponse := execute_code.CompileGo("code/"+createFileResponse.FileName, request.StdInput)
+
+		if !goCompileResponse.Success {
+			stdErr = goCompileResponse.Error
+		} else {
+			stdOutput = goCompileResponse.Output
+		}
+		break
 	default:
 		stdErr = "Please provide us with a valid language"
 	}
