@@ -41,7 +41,7 @@ func CompileTypescript(filename string, stdInput string) types.CompileCodeRespon
 
 		stdErrBytes, _ := io.ReadAll(stdError)
 
-		if stdErrBytes != nil && len(string(stdErrBytes)) > 1 {
+		if stdErrBytes != nil && len(string(stdErrBytes)) > 0 {
 			reject(errors.New(string(stdErrBytes)))
 		}
 
