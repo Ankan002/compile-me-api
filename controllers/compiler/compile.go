@@ -10,7 +10,7 @@ import (
 
 type CompRequest struct {
 	Code     string `json:"code" validate:"required"`
-	Language string `json:"language" validate:"required,eq=js|eq=ts|eq=py|eq=go|eq=java"`
+	Language string `json:"language" validate:"required,eq=js|eq=ts|eq=py|eq=go|eq=java|eq=rs"`
 	StdInput string `json:"stdInput"`
 }
 
@@ -95,6 +95,15 @@ func Compiler(c *fiber.Ctx) error {
 			stdErr = javaCompileResponse.Error
 		} else {
 			stdOutput = javaCompileResponse.Output
+		}
+		break
+	case "rs":
+		rustCompileResponse := execute_code.CompileRust("code/"+createFileResponse.FileName, request.StdInput)
+
+		if !rustCompileResponse.Success {
+			stdErr = rustCompileResponse.Error
+		} else {
+			stdOutput = rustCompileResponse.Output
 		}
 		break
 	default:

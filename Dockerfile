@@ -21,6 +21,8 @@ RUN apt-get install -y default-jre
 
 RUN apt-get install -y default-jdk
 
+RUN apt-get install -y rustc
+
 RUN npm i -g typescript ts-node
 
 COPY go.mod .
