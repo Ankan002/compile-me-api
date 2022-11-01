@@ -51,7 +51,7 @@ func CompilePython(filename string, stdInput string) types.CompileCodeResponse {
 
 		stdErrorBytes, _ := io.ReadAll(stdError)
 
-		if stdErrorBytes != nil && len(string(stdErrorBytes)) > 1 {
+		if stdErrorBytes != nil && len(string(stdErrorBytes)) > 0 {
 			reject(errors.New(string(stdErrorBytes)))
 		}
 
