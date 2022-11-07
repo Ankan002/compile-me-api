@@ -35,8 +35,6 @@ func CompileRust(filename string, input string) types.CompileCodeResponse {
 
 		stdErrorBytes, _ := io.ReadAll(stdError)
 
-		// TODO: Fix len(string(stdErrorBytes)) > 0 in each of the compilers
-
 		if stdErrorBytes != nil && len(string(stdErrorBytes)) > 0 {
 			reject(errors.New(string(stdErrorBytes)))
 		}

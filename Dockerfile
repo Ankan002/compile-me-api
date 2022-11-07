@@ -2,8 +2,8 @@ FROM ubuntu:22.04
 
 WORKDIR /usr/compiler-api
 
-ARG GO_ENV
-ARG PORT
+ENV GO_ENV ${GO_ENV}
+ENV PORT ${PORT}
 
 ENV DEBIAN_FRONTEND noninteractive
 
@@ -33,5 +33,7 @@ RUN ["go", "mod", "download"]
 COPY . .
 
 RUN ["go", "build", "-o", "/build"]
+
+EXPOSE ${PORT}
 
 CMD ["/build"]
