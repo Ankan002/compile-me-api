@@ -2,3 +2,5 @@ Dockerfile
 .dockerignore
 docker-compose.yml
 build
+.env
+.env.production

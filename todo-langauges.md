@@ -13,6 +13,6 @@
 
 ### Good To Have
 
-- [ ] Rust
+- [x] Rust
 - [ ] Swift
 - [ ] Kotlin

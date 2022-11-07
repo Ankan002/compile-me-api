@@ -3,8 +3,7 @@ version: "3.9"
 services:
   web:
     build: .
-    environment:
-      - PORT=${PORT}
-      - GO_ENV=${GO_ENV}
+    env_file:
+      - .env.production
     ports:
       - "8000:8000"
