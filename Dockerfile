@@ -7,6 +7,8 @@ ENV PORT ${PORT}
 
 ENV DEBIAN_FRONTEND noninteractive
 
+RUN rm /bin/sh && ln -s /bin/bash /bin/sh
+
 RUN apt update
 
 RUN apt-get install -y golang-go
@@ -22,6 +24,12 @@ RUN apt-get install -y default-jre
 RUN apt-get install -y default-jdk
 
 RUN apt-get install -y rustc
+
+RUN apt-get install -y zip unzip curl
+
+RUN curl -s "https://get.sdkman.io" | bash
+
+RUN source "$HOME/.sdkman/bin/sdkman-init.sh" && sdk install kotlin
 
 RUN npm i -g typescript ts-node
 
