@@ -10,7 +10,7 @@ import (
 
 type CompRequest struct {
 	Code     string `json:"code" validate:"required"`
-	Language string `json:"language" validate:"required,eq=js|eq=ts|eq=py|eq=go|eq=java|eq=rs"`
+	Language string `json:"language" validate:"required,eq=js|eq=ts|eq=py|eq=go|eq=java|eq=rs|eq=kt"`
 	StdInput string `json:"stdInput"`
 }
 
@@ -106,6 +106,14 @@ func Compiler(c *fiber.Ctx) error {
 			stdOutput = rustCompileResponse.Output
 		}
 		break
+	case "kt":
+		kotlinCompileResponse := execute_code.CompileKotlin("code/"+createFileResponse.FileName, request.StdInput)
+
+		if !kotlinCompileResponse.Success {
+			stdErr = kotlinCompileResponse.Error
+		} else {
+			stdOutput = kotlinCompileResponse.Output
+		}
 	default:
 		stdErr = "Please provide us with a valid language"
 	}

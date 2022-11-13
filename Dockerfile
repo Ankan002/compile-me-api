@@ -7,7 +7,7 @@ ENV PORT ${PORT}
 
 ENV DEBIAN_FRONTEND noninteractive
 
-RUN rm /bin/sh && ln -s /bin/bash /bin/sh
+SHELL ["/bin/bash", "-c"]
 
 RUN apt update
 
@@ -30,6 +30,8 @@ RUN apt-get install -y zip unzip curl
 RUN curl -s "https://get.sdkman.io" | bash
 
 RUN source "$HOME/.sdkman/bin/sdkman-init.sh" && sdk install kotlin
+
+ENV PATH=/root/.sdkman/candidates/kotlin/current/bin:$PATH
 
 RUN npm i -g typescript ts-node
 
