@@ -13,6 +13,8 @@ import (
 	"time"
 )
 
+// TODO: We are currently giving a max time of 60 seconds or 1 minute to compile the Kotlin file, and if it is not compiled till then, we simply terminate the process.
+
 func CompileKotlin(filename string, input string) types.CompileCodeResponse {
 	compilationPromise := promise.New(func(resolve func(isCreated bool), reject func(error)) {
 		execCommand := exec.Command("kotlinc", filename, "-include-runtime", "-d", strings.Split(filename, ".")[0]+".jar")
