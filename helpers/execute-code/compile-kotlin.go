@@ -17,7 +17,7 @@ func CompileKotlin(filename string, input string) types.CompileCodeResponse {
 	compilationPromise := promise.New(func(resolve func(isCreated bool), reject func(error)) {
 		execCommand := exec.Command("kotlinc", filename, "-include-runtime", "-d", strings.Split(filename, ".")[0]+".jar")
 
-		time.AfterFunc(8*time.Second, func() {
+		time.AfterFunc(20*time.Second, func() {
 			if processKillError := execCommand.Process.Kill(); processKillError != nil {
 				log.Println(processKillError.Error())
 			}
