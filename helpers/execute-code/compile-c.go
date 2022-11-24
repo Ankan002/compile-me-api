@@ -13,9 +13,9 @@ import (
 	"time"
 )
 
-func CompileCpp(filename string, input string) types.CompileCodeResponse {
+func CompileC(filename string, input string) types.CompileCodeResponse {
 	compilationPromise := promise.New(func(resolve func(isCreated bool), reject func(error)) {
-		execCommand := exec.Command("g++", "-o", strings.Split(filename, ".")[0], filename)
+		execCommand := exec.Command("gcc", "-o", strings.Split(filename, ".")[0], filename)
 
 		time.AfterFunc(8*time.Second, func() {
 			if processKillError := execCommand.Process.Kill(); processKillError != nil {
@@ -51,7 +51,11 @@ func CompileCpp(filename string, input string) types.CompileCodeResponse {
 	var compilationWarningAndError string
 
 	if compilationError != nil {
-		compilationWarningAndError = compilationError.Error()
+		if compilationError.Error() == "TLE" {
+			compilationWarningAndError = "Time Limit Exceeded...\n"
+		} else {
+			compilationWarningAndError = compilationError.Error()
+		}
 	}
 
 	if !compilationResult {
@@ -67,8 +71,8 @@ func CompileCpp(filename string, input string) types.CompileCodeResponse {
 		execCommand := exec.Command(strings.Split(filename, ".")[0])
 
 		time.AfterFunc(8*time.Second, func() {
-			if processKilError := execCommand.Process.Kill(); processKilError != nil {
-				log.Println(processKilError.Error())
+			if processKillError := execCommand.Process.Kill(); processKillError != nil {
+				log.Println(processKillError.Error())
 			}
 
 			reject(errors.New("TLE"))
@@ -78,8 +82,8 @@ func CompileCpp(filename string, input string) types.CompileCodeResponse {
 		stdError, _ := execCommand.StderrPipe()
 		stdOutput, _ := execCommand.StdoutPipe()
 
-		if commandStartError := execCommand.Start(); commandStartError != nil {
-			reject(errors.New(commandStartError.Error()))
+		if startCommandError := execCommand.Start(); startCommandError != nil {
+			reject(errors.New(startCommandError.Error()))
 		}
 
 		if input != "" {
@@ -128,6 +132,6 @@ func CompileCpp(filename string, input string) types.CompileCodeResponse {
 
 	return types.CompileCodeResponse{
 		Success: true,
-		Output:  compilationWarningAndError + runtimeResult,
+		Output:  runtimeResult,
 	}
 }
