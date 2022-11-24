@@ -15,4 +15,4 @@
 
 - [x] Rust
 - [ ] Swift
-- [ ] Kotlin
+- [X] Kotlin

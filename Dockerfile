@@ -25,6 +25,8 @@ RUN apt-get install -y default-jdk
 
 RUN apt-get install -y rustc
 
+RUN apt-get install -y build-essential
+
 RUN apt-get install -y zip unzip curl
 
 RUN curl -s "https://get.sdkman.io" | bash
