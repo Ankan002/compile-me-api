@@ -118,7 +118,7 @@ func CompileRust(filename string, input string) types.CompileCodeResponse {
 		if runtimeError.Error() == "TLE" {
 			return types.CompileCodeResponse{
 				Success: false,
-				Error:   compileWarningAndError + "Time Limit Exceeded...",
+				Error:   compileWarningAndError + "Time Limit Exceeded...\n",
 			}
 		}
 

@@ -62,7 +62,7 @@ func CompileTypescript(filename string, stdInput string) types.CompileCodeRespon
 		if compilationError.Error() == "TLE" {
 			return types.CompileCodeResponse{
 				Success: false,
-				Error:   "Time Limit Exceeded...",
+				Error:   "Time Limit Exceeded...\n",
 			}
 		}
 

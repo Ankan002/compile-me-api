@@ -62,7 +62,7 @@ func CompileGo(filename string, stdInput string) types.CompileCodeResponse {
 		if compilationError.Error() == "TLE" {
 			return types.CompileCodeResponse{
 				Success: false,
-				Error:   "Time Limit Exceeded",
+				Error:   "Time Limit Exceeded...\n",
 			}
 		}
 
