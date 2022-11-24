@@ -7,8 +7,8 @@
 - [x] Golang
 - [x] Python
 - [x] Java
-- [ ] C++
-- [ ] C
+- [x] C++
+- [x] C
 - [ ] C#
 
 ### Good To Have

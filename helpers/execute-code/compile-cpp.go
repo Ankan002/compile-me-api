@@ -51,7 +51,11 @@ func CompileCpp(filename string, input string) types.CompileCodeResponse {
 	var compilationWarningAndError string
 
 	if compilationError != nil {
-		compilationWarningAndError = compilationError.Error()
+		if compilationError.Error() == "TLE" {
+			compilationWarningAndError = "Time Limit Exceeded...\n"
+		} else {
+			compilationWarningAndError = compilationError.Error()
+		}
 	}
 
 	if !compilationResult {

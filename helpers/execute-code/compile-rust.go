@@ -13,8 +13,6 @@ import (
 	"time"
 )
 
-// TODO: Decide to show the warnings.
-
 func CompileRust(filename string, input string) types.CompileCodeResponse {
 	compilationPromise := promise.New(func(resolve func(isCreated bool), reject func(error)) {
 		execCommand := exec.Command("rustc", filename, "-o", strings.Split(filename, ".")[0])
@@ -50,17 +48,21 @@ func CompileRust(filename string, input string) types.CompileCodeResponse {
 
 	compilationResult, compilationError := compilationPromise.Await()
 
-	var compileWarningAndError string
+	var compilationWarningAndError string
 
 	if compilationError != nil {
-		compileWarningAndError = compilationError.Error()
+		if compilationError.Error() == "TLE" {
+			compilationWarningAndError = "Time Limit Exceeded...\n"
+		} else {
+			compilationWarningAndError = compilationError.Error()
+		}
 	}
 
 	if !compilationResult {
 		if _, fileFoundErr := os.Stat(strings.Split(filename, ".")[0]); errors.Is(fileFoundErr, os.ErrNotExist) {
 			return types.CompileCodeResponse{
 				Success: false,
-				Error:   compileWarningAndError,
+				Error:   compilationWarningAndError,
 			}
 		}
 	}
@@ -118,18 +120,18 @@ func CompileRust(filename string, input string) types.CompileCodeResponse {
 		if runtimeError.Error() == "TLE" {
 			return types.CompileCodeResponse{
 				Success: false,
-				Error:   compileWarningAndError + "Time Limit Exceeded...\n",
+				Error:   compilationWarningAndError + "Time Limit Exceeded...\n",
 			}
 		}
 
 		return types.CompileCodeResponse{
 			Success: false,
-			Error:   compileWarningAndError + runtimeError.Error(),
+			Error:   compilationWarningAndError + runtimeError.Error(),
 		}
 	}
 
 	return types.CompileCodeResponse{
 		Success: true,
-		Output:  compileWarningAndError + runtimeResult,
+		Output:  compilationWarningAndError + runtimeResult,
 	}
 }
