@@ -53,7 +53,11 @@ func CompileKotlin(filename string, input string) types.CompileCodeResponse {
 	var compilationWarningAndError string
 
 	if compilationError != nil {
-		compilationWarningAndError = compilationError.Error()
+		if compilationError.Error() == "TLE" {
+			compilationWarningAndError = "Time Limit Exceeded...\n"
+		} else {
+			compilationWarningAndError = compilationError.Error()
+		}
 	}
 
 	if !compilationResult {
@@ -118,7 +122,7 @@ func CompileKotlin(filename string, input string) types.CompileCodeResponse {
 		if runtimeError.Error() == "TLE" {
 			return types.CompileCodeResponse{
 				Success: false,
-				Error:   compilationWarningAndError + "Time Limit Exceeded....",
+				Error:   compilationWarningAndError + "Time Limit Exceeded...\n",
 			}
 		}
 

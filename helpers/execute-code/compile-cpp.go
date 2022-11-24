@@ -110,8 +110,6 @@ func CompileCpp(filename string, input string) types.CompileCodeResponse {
 
 	runtimeResult, runtimeError := runtimePromise.Await()
 
-	// TODO: Refactor all TLE Errors with escape sequence of \n
-
 	helpers.DeleteFile(strings.Split(filename, ".")[0])
 
 	if runtimeError != nil {
