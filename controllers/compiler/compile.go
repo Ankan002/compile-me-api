@@ -10,7 +10,7 @@ import (
 
 type CompRequest struct {
 	Code     string `json:"code" validate:"required"`
-	Language string `json:"language" validate:"required,eq=js|eq=ts|eq=py|eq=go|eq=java|eq=rs|eq=kt|eq=cpp|eq=c"`
+	Language string `json:"language" validate:"required,eq=js|eq=ts|eq=py|eq=go|eq=java|eq=rs|eq=kt|eq=cpp|eq=c|eq=cs"`
 	StdInput string `json:"stdInput"`
 }
 
@@ -131,6 +131,15 @@ func Compiler(c *fiber.Ctx) error {
 			stdErr = cCompileResponse.Error
 		} else {
 			stdOutput = cCompileResponse.Output
+		}
+		break
+	case "cs":
+		cSharpCompileResponse := execute_code.CompileCSharp("code/"+createFileResponse.FileName, request.StdInput)
+
+		if !cSharpCompileResponse.Success {
+			stdErr = cSharpCompileResponse.Error
+		} else {
+			stdOutput = cSharpCompileResponse.Output
 		}
 		break
 	default:
