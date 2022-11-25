@@ -9,6 +9,8 @@ ENV DEBIAN_FRONTEND noninteractive
 
 SHELL ["/bin/bash", "-c"]
 
+RUN tee /etc/apt/sources.list.d/mono-official-stable.list
+
 RUN apt update
 
 RUN apt-get install -y golang-go
@@ -28,6 +30,8 @@ RUN apt-get install -y rustc
 RUN apt-get install -y build-essential
 
 RUN apt-get install -y zip unzip curl
+
+RUN apt-get install -y mono-mcs
 
 RUN curl -s "https://get.sdkman.io" | bash
 
