@@ -8,14 +8,14 @@ import (
 	"time"
 )
 
-type CompRequest struct {
+type compRequest struct {
 	Code     string `json:"code" validate:"required"`
 	Language string `json:"language" validate:"required,eq=js|eq=ts|eq=py|eq=go|eq=java|eq=rs|eq=kt|eq=cpp|eq=c|eq=cs"`
 	StdInput string `json:"stdInput"`
 }
 
 func Compiler(c *fiber.Ctx) error {
-	request := CompRequest{}
+	request := compRequest{}
 
 	if err := c.BodyParser(&request); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{

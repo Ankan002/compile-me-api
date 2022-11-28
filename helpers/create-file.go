@@ -1,17 +1,12 @@
 package helpers
 
 import (
+	"github.com/Ankan002/compiler-api/types"
 	"github.com/gofiber/fiber/v2/utils"
 	"io/ioutil"
 	"log"
 	"os"
 )
-
-type FileCreationResponse struct {
-	Success  bool
-	FileName string
-	Error    string
-}
 
 func MakeDirectory() bool {
 	err := os.Mkdir("code", 0755)
@@ -25,12 +20,12 @@ func MakeDirectory() bool {
 	return true
 }
 
-func CreateFile(code string, language string) FileCreationResponse {
+func CreateFile(code string, language string) types.FileCreationResponse {
 	if _, directorySearchError := os.Stat("code"); os.IsNotExist(directorySearchError) {
 		isDirectoryCreated := MakeDirectory()
 
 		if !isDirectoryCreated {
-			return FileCreationResponse{
+			return types.FileCreationResponse{
 				Success: false,
 				Error:   "Directory Creation Failed...",
 			}
@@ -42,13 +37,13 @@ func CreateFile(code string, language string) FileCreationResponse {
 	writeError := ioutil.WriteFile("code/"+fileName, []byte(code), 0664)
 
 	if writeError != nil {
-		return FileCreationResponse{
+		return types.FileCreationResponse{
 			Success: false,
 			Error:   "File could not be created...",
 		}
 	}
 
-	return FileCreationResponse{
+	return types.FileCreationResponse{
 		Success:  true,
 		FileName: fileName,
 	}

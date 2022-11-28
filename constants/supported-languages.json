@@ -1,0 +1,44 @@
+{
+  "languages": [
+    {
+      "language": "C",
+      "compile_query_parameter": "c"
+    },
+    {
+      "language": "C++",
+      "compile_query_parameter": "cpp"
+    },
+    {
+      "language": "C#",
+      "compile_query_parameter": "cs"
+    },
+    {
+      "language": "Golang",
+      "compile_query_parameter": "go"
+    },
+    {
+      "language": "Java",
+      "compile_query_parameter": "java"
+    },
+    {
+      "language": "Javascript",
+      "compile_query_parameter": "js"
+    },
+    {
+      "language": "Typescript",
+      "compile_query_parameter": "ts"
+    },
+    {
+      "language": "Kotlin",
+      "compile_query_parameter": "kt"
+    },
+    {
+      "language": "Python",
+      "compile_query_parameter": "py"
+    },
+    {
+      "language": "Rust",
+      "compile_query_parameter": "rs"
+    }
+  ]
+}
