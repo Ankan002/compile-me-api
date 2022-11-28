@@ -30,6 +30,7 @@ func main() {
 	})
 
 	routes.CompilerRouter(router)
+	routes.LanguagesRouter(router)
 
 	log.Fatal(app.Listen(":" + os.Getenv("PORT")))
 }
