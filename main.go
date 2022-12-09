@@ -31,6 +31,7 @@ func main() {
 
 	routes.CompilerRouter(router)
 	routes.LanguagesRouter(router)
+	routes.DownloadCode(router)
 
 	log.Fatal(app.Listen(":" + os.Getenv("PORT")))
 }
