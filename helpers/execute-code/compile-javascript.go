@@ -12,7 +12,7 @@ import (
 
 func CompileJavascript(filename string, stdInput string) types.CompileCodeResponse {
 	compilationPromise := promise.New(func(resolve func(result string), reject func(error)) {
-		execCommand := exec.Command("node", filename)
+		execCommand := exec.Command("node", "--no-warnings", filename)
 
 		time.AfterFunc(8*time.Second, func() {
 			if processKillError := execCommand.Process.Kill(); processKillError != nil {
