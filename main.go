@@ -25,7 +25,7 @@ func main() {
 	app.Get("/", func(ctx *fiber.Ctx) error {
 		return ctx.JSON(fiber.Map{
 			"success": true,
-			"message": "Welcome to the compiler API",
+			"message": "Welcome to the Compile Me API",
 		})
 	})
 
