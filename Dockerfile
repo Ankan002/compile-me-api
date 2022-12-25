@@ -2,7 +2,7 @@ FROM ubuntu:22.04
 
 WORKDIR /usr/compiler-api
 
-ENV GO_ENV ${GO_ENV}
+ENV GO_ENV="production"
 ENV PORT ${PORT}
 
 ENV DEBIAN_FRONTEND noninteractive
