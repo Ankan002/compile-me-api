@@ -16,7 +16,7 @@ This project is a standalone api that can be used to compile code on web on the 
 - Run the following command
 
 ```bash
-docker run -d -p 8000:8000 -e PORT={PORT} ankan02/compile-me-api:0.0.1
+docker run -d -p 8000:8000 -e PORT={PORT} ankan02/compile-me-api:0.0.2
 ```
 
 - Replace `PORT` with the port of your choice.
