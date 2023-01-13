@@ -38,6 +38,10 @@ RUN apt-get install -y build-essential
 
 RUN apt-get install -y mono-mcs
 
+RUN apt-get install -y python3-pip
+
+RUN pip3 install numpy
+
 RUN curl -s "https://get.sdkman.io" | bash
 
 RUN source "$HOME/.sdkman/bin/sdkman-init.sh" && sdk install kotlin
