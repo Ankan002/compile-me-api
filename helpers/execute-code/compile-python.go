@@ -51,7 +51,7 @@ func CompilePython(filename string, stdInput string) types.CompileCodeResponse {
 
 		stdErrorBytes, _ := io.ReadAll(stdError)
 
-		if stdErrorBytes != nil && len(string(stdErrorBytes)) > 0 {
+		if stdErrorBytes != nil && len(string(stdErrorBytes)) > 0 && string(stdErrorBytes) != "OpenBLAS WARNING - could not determine the L2 cache size on this system, assuming 256k\n" {
 			reject(errors.New(string(stdErrorBytes)))
 		}
 
