@@ -40,7 +40,7 @@ RUN apt-get install -y mono-mcs
 
 RUN apt-get install -y python3-pip
 
-RUN pip3 install numpy
+RUN pip3 --no-cache-dir install numpy
 
 RUN curl -s "https://get.sdkman.io" | bash
 
