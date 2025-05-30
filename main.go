@@ -11,11 +11,7 @@ import (
 	"github.com/gofiber/fiber/v2/middleware/logger"
 )
 
-func main() {
-	if os.Getenv("GO_ENV") != "production" {
-		config.LoadEnv()
-	}
-
+func serverfulHandler() {
 	app := fiber.New()
 
 	app.Use(cors.New())
@@ -34,4 +30,18 @@ func main() {
 	routes.LanguagesRouter(router)
 
 	log.Fatal(app.Listen(":" + os.Getenv("PORT")))
+}
+
+func lambdaHandler() {
+
+}
+
+func main() {
+	if os.Getenv("GO_ENV") != "production" {
+		config.LoadEnv()
+	}
+
+	if os.Getenv("INVOCATION") == "serverful" {
+		serverfulHandler()
+	}
 }

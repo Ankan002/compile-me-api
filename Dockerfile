@@ -4,6 +4,7 @@ WORKDIR /usr/compiler-api
 
 ENV GO_ENV="production"
 ENV PORT ${PORT}
+ENV INVOCATION ${INVOCATION}
 ENV CGO_ENABLED=1
 ENV GOOS=linux
 
@@ -74,6 +75,6 @@ COPY . .
 
 RUN go build -buildvcs=false -o build .
 
-EXPOSE ${PORT}
+EXPOSE 5000-10000
 
 CMD ["./build"]
