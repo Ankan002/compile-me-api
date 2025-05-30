@@ -1,16 +1,18 @@
 package execute_code
 
 import (
+	"context"
 	"errors"
-	"github.com/Ankan002/compiler-api/helpers"
-	"github.com/Ankan002/compiler-api/types"
-	"github.com/chebyrash/promise"
 	"io"
 	"log"
 	"os"
 	"os/exec"
 	"strings"
 	"time"
+
+	"github.com/Ankan002/compiler-api/helpers"
+	"github.com/Ankan002/compiler-api/types"
+	"github.com/chebyrash/promise"
 )
 
 // TODO: Think of how to make the standard command as csc [upgrade from mcs (maybe to mcs-mono by only one file)]
@@ -48,7 +50,8 @@ func CompileCSharp(filename string, input string) types.CompileCodeResponse {
 		resolve(true)
 	})
 
-	compilationResult, compilationError := compilationPromise.Await()
+	compilationResultRef, compilationError := compilationPromise.Await(context.TODO())
+	compilationResult := *compilationResultRef
 
 	var compilationWarningAndError string
 
@@ -114,7 +117,8 @@ func CompileCSharp(filename string, input string) types.CompileCodeResponse {
 		resolve(string(stdOutputBytes))
 	})
 
-	runtimeResult, runtimeError := runtimePromise.Await()
+	runtimeResultRef, runtimeError := runtimePromise.Await(context.TODO())
+	runtimeResult := *runtimeResultRef
 
 	helpers.DeleteFile(strings.Split(filename, ".")[0] + ".exe")
 

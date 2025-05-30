@@ -2,15 +2,17 @@ package execute_code
 
 import (
 	"errors"
-	"github.com/Ankan002/compiler-api/helpers"
-	"github.com/Ankan002/compiler-api/types"
-	"github.com/chebyrash/promise"
 	"io"
 	"log"
 	"os"
 	"os/exec"
 	"strings"
 	"time"
+
+	"github.com/Ankan002/compiler-api/helpers"
+	"github.com/Ankan002/compiler-api/types"
+	"github.com/chebyrash/promise"
+	"golang.org/x/net/context"
 )
 
 func CompileC(filename string, input string) types.CompileCodeResponse {
@@ -46,7 +48,8 @@ func CompileC(filename string, input string) types.CompileCodeResponse {
 		resolve(true)
 	})
 
-	compilationResult, compilationError := compilationPromise.Await()
+	compilationResultRef, compilationError := compilationPromise.Await(context.TODO())
+	compilationResult := *compilationResultRef
 
 	var compilationWarningAndError string
 
@@ -112,7 +115,8 @@ func CompileC(filename string, input string) types.CompileCodeResponse {
 		resolve(string(stdOutputBytes))
 	})
 
-	runtimeResult, runtimeError := runtimePromise.Await()
+	runtimeResultRef, runtimeError := runtimePromise.Await(context.TODO())
+	runtimeResult := *runtimeResultRef
 
 	helpers.DeleteFile(strings.Split(filename, ".")[0])
 

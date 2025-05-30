@@ -1,13 +1,15 @@
 package execute_code
 
 import (
+	"context"
 	"errors"
-	"github.com/Ankan002/compiler-api/types"
-	"github.com/chebyrash/promise"
 	"io"
 	"log"
 	"os/exec"
 	"time"
+
+	"github.com/Ankan002/compiler-api/types"
+	"github.com/chebyrash/promise"
 )
 
 func CompileJavascript(filename string, stdInput string) types.CompileCodeResponse {
@@ -58,7 +60,8 @@ func CompileJavascript(filename string, stdInput string) types.CompileCodeRespon
 		resolve(string(stdOutputBytes))
 	})
 
-	compilationResult, compilationError := compilationPromise.Await()
+	compilationResultRef, compilationError := compilationPromise.Await(context.TODO())
+	compilationResult := *compilationResultRef
 
 	if compilationError != nil {
 		if compilationError.Error() == "TLE" {

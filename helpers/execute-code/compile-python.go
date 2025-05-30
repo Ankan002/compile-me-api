@@ -1,14 +1,16 @@
 package execute_code
 
 import (
+	"context"
 	"errors"
-	"github.com/Ankan002/compiler-api/types"
-	"github.com/chebyrash/promise"
 	"io"
 	"log"
 	"os/exec"
 	"runtime"
 	"time"
+
+	"github.com/Ankan002/compiler-api/types"
+	"github.com/chebyrash/promise"
 )
 
 func CompilePython(filename string, stdInput string) types.CompileCodeResponse {
@@ -66,7 +68,8 @@ func CompilePython(filename string, stdInput string) types.CompileCodeResponse {
 		resolve(string(stdOutputBytes))
 	})
 
-	compilationResult, compilationError := compilationPromise.Await()
+	compilationResultRef, compilationError := compilationPromise.Await(context.TODO())
+	compilationResult := *compilationResultRef
 
 	if compilationError != nil {
 		if compilationError.Error() == "TLE" {
