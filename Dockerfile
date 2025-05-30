@@ -4,6 +4,9 @@ WORKDIR /usr/compiler-api
 
 ENV GO_ENV="production"
 ENV PORT ${PORT}
+ENV CGO_ENABLED=1
+ENV GOOS=linux
+ENV GOARCH=arm64
 
 ENV DEBIAN_FRONTEND noninteractive
 
@@ -15,10 +18,13 @@ SHELL ["/bin/bash", "-c"]
 RUN tee /etc/apt/sources.list.d/mono-official-stable.list
 
 RUN apt update
+RUN apt-get install -y zip unzip curl wget
 
-RUN apt-get install -y golang-go
+# RUN apt-get install -y golang-go
 
-RUN apt-get install -y zip unzip curl
+RUN wget https://go.dev/dl/go1.24.3.linux-arm64.tar.gz
+RUN tar -C /usr/local -xzf go1.24.3.linux-arm64.tar.gz
+ENV PATH="/usr/local/go/bin:$PATH"
 
 RUN curl --silent -o- https://raw.githubusercontent.com/creationix/nvm/v0.31.2/install.sh | bash
 RUN . "$NVM_DIR/nvm.sh" && nvm install $NODE_VERSION
@@ -49,6 +55,7 @@ RUN source "$HOME/.sdkman/bin/sdkman-init.sh" && sdk install kotlin
 ENV PATH=/root/.sdkman/candidates/kotlin/current/bin:$PATH
 
 RUN npm i -g typescript ts-node
+RUN echo "Building with Go version:" && go version
 
 COPY go.mod .
 COPY go.sum .
@@ -57,8 +64,11 @@ RUN ["go", "mod", "download"]
 
 COPY . .
 
-RUN ["go", "build", "-buildvcs=false", "-o", "/build"]
+# RUN ["go", "build", "-buildvcs=false", "-o", "/build"]
+# -tags musl --ldflags "-extldflags -static"
+
+RUN go build -buildvcs=false -o build .
 
 EXPOSE ${PORT}
 
-CMD ["/build"]
+CMD ["./build"]
