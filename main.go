@@ -1,13 +1,14 @@
 package main
 
 import (
+	"log"
+	"os"
+
 	"github.com/Ankan002/compiler-api/config"
 	"github.com/Ankan002/compiler-api/routes"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/gofiber/fiber/v2/middleware/logger"
-	"log"
-	"os"
 )
 
 func main() {
