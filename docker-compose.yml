@@ -1,7 +1,12 @@
 services:
     compile-me-api:
-        build: .
+        build:
+            context: .
+            args:
+                - BUILD_ARCH=arm64
         env_file:
             - .env.production
         ports:
             - "8000:8000"
+        environment:
+            - BUILD_ARCH=arm64

@@ -6,7 +6,9 @@ ENV GO_ENV="production"
 ENV PORT ${PORT}
 ENV CGO_ENABLED=1
 ENV GOOS=linux
-ENV GOARCH=arm64
+
+ARG BUILD_ARCH=${BUILD_ARCH}
+ENV GO_ARCH=$BUILD_ARCH
 
 ENV DEBIAN_FRONTEND noninteractive
 
@@ -15,6 +17,9 @@ ENV NODE_VERSION 18.12.1
 
 SHELL ["/bin/bash", "-c"]
 
+RUN echo "BUILD_ARCH is: $BUILD_ARCH"
+RUN echo "GO_ARCH is: $GO_ARCH"
+
 RUN tee /etc/apt/sources.list.d/mono-official-stable.list
 
 RUN apt update
@@ -22,8 +27,8 @@ RUN apt-get install -y zip unzip curl wget
 
 # RUN apt-get install -y golang-go
 
-RUN wget https://go.dev/dl/go1.24.3.linux-arm64.tar.gz
-RUN tar -C /usr/local -xzf go1.24.3.linux-arm64.tar.gz
+RUN wget https://go.dev/dl/go1.24.3.linux-$BUILD_ARCH.tar.gz
+RUN tar -C /usr/local -xzf go1.24.3.linux-$BUILD_ARCH.tar.gz
 ENV PATH="/usr/local/go/bin:$PATH"
 
 RUN curl --silent -o- https://raw.githubusercontent.com/creationix/nvm/v0.31.2/install.sh | bash
