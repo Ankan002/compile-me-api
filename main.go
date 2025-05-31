@@ -5,7 +5,9 @@ import (
 	"os"
 
 	"github.com/Ankan002/compiler-api/config"
+	f_lambda "github.com/Ankan002/compiler-api/lambda"
 	"github.com/Ankan002/compiler-api/routes"
+	"github.com/aws/aws-lambda-go/lambda"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/gofiber/fiber/v2/middleware/logger"
@@ -32,16 +34,16 @@ func serverfulHandler() {
 	log.Fatal(app.Listen(":" + os.Getenv("PORT")))
 }
 
-func lambdaHandler() {
-
-}
-
 func main() {
 	if os.Getenv("GO_ENV") != "production" {
 		config.LoadEnv()
 	}
 
-	if os.Getenv("INVOCATION") == "serverful" {
+	if os.Getenv("INVOCATION") == "non-lambda" {
 		serverfulHandler()
+	}
+
+	if os.Getenv("INVOCATION") == "lambda" {
+		lambda.Start(f_lambda.CompilationLambda)
 	}
 }
